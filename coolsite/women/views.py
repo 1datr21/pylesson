@@ -3,24 +3,37 @@ from django.shortcuts import render, redirect
 
 from .models import *
 
-
-
 menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
 
-def index(request):
-    posts = Women.objects.all();
-    return render(request, 'women/index.html', {'posts': posts, 'menu': menu, 'title': 'Главная страница'})
+def index(request,cat_id=0):
+    if(cat_id == 0):
+        posts = Women.objects.all();
+    else:
+        posts = Women.objects.filter(cat=cat_id);
+
+    if len(posts) == 0:
+        raise Http404();
+
+    cats = Category.objects.all();
+    params = {'posts': posts, 'menu': menu, 'title': 'Главная страница', 'cat_selected': cat_id, 'cats': cats};
+    return render(request, 'women/index.html', params)
 
 def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'О сайте'})
 
+def addpage(request):
+    return render(request, 'women/about.html', {'menu': menu, 'title': 'Добавить станицу'})
 
+def contact(request):
+    return render(request, 'women/about.html', {'menu': menu, 'title': 'Контакты'})
 
-def categories(request, catid):
-    if request.POST:
-        print(request.POST)
+def show_post(request, post_id):
+    women = Women.objects.get(pk=post_id);
+    params = {'w':women, 'menu': menu, 'title': women.title};
+    return render(request, 'women/post.html', context=params)
 
-    return HttpResponse(f"<h1>Статьи по категориям</h1><p>{catid}</p>")
+def login(request):
+    return render(request, 'women/about.html', {'menu': menu, 'title': 'Войти'})
 
 def archive(request, year):
     if int(year) > 2020:
