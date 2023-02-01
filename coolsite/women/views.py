@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
+from time import strftime
 
 from .models import *
 
@@ -29,7 +30,11 @@ def contact(request):
 
 def show_post(request, post_id):
     women = Women.objects.get(pk=post_id);
-    params = {'w':women, 'menu': menu, 'title': women.title};
+    cats = Category.objects.all();
+    params = {'w':women, 'menu': menu, 'title': women.title, 'strftime':strftime, 'cats':cats, 'cat_selected': women.cat.pk}
+
+    # print(women.birthday.time.strftime('%Y:%m:%d'))
+
     return render(request, 'women/post.html', context=params)
 
 def login(request):

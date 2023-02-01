@@ -4,7 +4,7 @@
 <div>
     <h1>{{w.title}}</h1>
 	{% if w.birthday  %}
-		<h3>Дата рождения: <span>{{ w.birthday }}</span></h3>
+		<h3>Дата рождения: <span>{{ w.birthday }} </span></h3>
 	{% endif %}
 	{% autoescape on %}
 	<p class="link-read-post">{{w.content|linebreaks}}</p>
