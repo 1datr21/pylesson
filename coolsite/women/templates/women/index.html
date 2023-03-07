@@ -3,7 +3,7 @@
 {% block content %}
 <ul class="list-articles">
 	{% for p in posts %}
-			<li><h2>{{p.title}}</h2>
+			<li><h2>{{p.title}} {% if p.foreign_agency %}<span class="fa_label">(признана иностранным агентом)</span>{% endif %}</h2>
 	{% autoescape on %}
 	{{p.content|linebreaks|truncatewords:60}}
 	{% endautoescape %}

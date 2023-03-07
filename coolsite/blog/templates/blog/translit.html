@@ -1,0 +1,14 @@
+{% extends 'blog/layout.html' %}
+{% load static %}
+{% block content %}
+<script src="{% static 'blog/js/translate.js' %}"></script>
+<table><tr>
+    <td>
+        <form method="post" action="{% url 'translit' %}" id="tr_form" ">
+            {{ form.as_p }}{% csrf_token %}
+            <input type="submit" value="Перевести" />
+        </form>
+    </td>
+    <td><p id="tr_ucase"></p><p id="tr_lcase"></p></td>
+</tr></table>
+{% endblock %}

@@ -9,5 +9,7 @@ urlpatterns = [
     path('about', about, name='about'),
     path('feedback', feedback, name='feedback'),
     path('one/<int:pid>/', one, name='one'),
+    path('leet/', leet, name='leet'),
+    path('translit/', translit, name='translit'),
 #    re_path(r'^/?pYear/')
 ]
