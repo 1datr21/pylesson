@@ -7,7 +7,7 @@ from blog.forms import *;
 from django.core import serializers
 from django.http import JsonResponse
 
-menu = {'home':"Главная", 'about': "О нас", 'feedback': "Обратная связь"}
+menu = {'home':"Главная", 'about': "О нас", 'feedback': "Обратная связь", 'translit':"Транслит по-контр-страйковски"}
 
 # Create your views here.
 def index(request, page=1):
@@ -35,7 +35,7 @@ def translit(request):
         if theform.is_valid():
             symbols = {'А': 'A', 'Б': '6', 'В': 'B', 'Г': 'r', 'Д': 'D',
                  'Е': 'E','Ё': 'E', 'Ж':'3X', 'З':'3', 'И': 'u','Й': 'u', 'К': 'K', 'Л': 'Jl', 'М': 'M','Н':'H','О':'O','П':'n','Р':'P','С':'C',
-                       'Т':'T','У':'у','Ф':'qp','Х':'X','Ч':'4','Щ':'LLI','Щ':'LLIb','Ь':'b','Ъ':'1b','Ы':'bl','Э':'-)','Ю':'10','Я':'9l'}
+                       'Т':'T','У':'у','Ф':'qp','Х':'X','Ч':'4','Щ':'LLI','Щ':'LLIb','Ц':'Ll','Ь':'b','Ъ':'1b','Ы':'bl','Э':'-)','Ю':'I0','Я':'9l'}
             str = theform.cleaned_data.get("content")
             result = str.upper().translate(str.maketrans(symbols))
             res_data = {'result': result, 'result_lcase':result.lower() }

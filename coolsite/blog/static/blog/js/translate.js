@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('tr_form').addEventListener('submit', function(e) {
-        e.preventDefault();
 
+    function translate_text()
+    {
         var form = document.getElementById('tr_form');
 
-        var url = e.submitter.formAction;
+        var url = form.action;
 
         var elements = form.querySelectorAll('input,textarea');
         var formData = new FormData();
@@ -20,10 +20,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     //console.log(xmlHttp.response);
                     document.getElementById('tr_ucase').innerText =xmlHttp.response.result;
-                //    document.getElementById('tr_lcase').innerText =xmlHttp.response.result_lcase;
+                    document.getElementById('tr_lcase').innerText =xmlHttp.response.result_lcase;
                 }
             }
         xmlHttp.open("post", url);
         xmlHttp.send(formData);
+    }
+    document.getElementById('tr_form').onsubmit = function(e) {
+        e.preventDefault();
+        translate_text();
+        return false;
+    };
+
+
+
+    document.getElementById('id_content').addEventListener('input', function(e) {
+        translate_text();
     });
 });

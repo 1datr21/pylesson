@@ -6,6 +6,9 @@
 	{% if w.birthday  %}
 		<h3>Дата рождения: <span>{{ w.birthday }} </span></h3>
 	{% endif %}
+	{% if w.photo %}
+		<img src="{{w.photo.url}}" width="300px"/>
+	{% endif %}
 	{% autoescape on %}
 	<p class="link-read-post">{{w.content|linebreaks}}</p>
 	{% endautoescape %}
