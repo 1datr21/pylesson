@@ -1,13 +1,11 @@
-		<div class="header">
-			<ul id="mainmenu" class="mainmenu">
-			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
-{% for m in menu %}
-	{% if not forloop.last %}
-			<li><a href="#">{{m.title}}</a></li>
-	{% else %}
-			<li class="last"><a href="#">{{m.title}}</a></li>
-	{% endif %}
-{% endfor %}
-			</ul>
-			<div class="clear"></div>
-		</div>
+{% load static %}
+<div class="header">
+	<ul id="mainmenu" class="mainmenu">
+		<li class="logo"><a href="{% url 'home' %}"><div class="logo"><img src="{% static 'women/img/logo.png' %}" /></div></a></li>
+		{% for key, value in menu.items %}
+			<li><a href="{% url value %}">{{key}}</a></li>
+		{% endfor %}
+		<li class="last" href="{% url 'women:login' %}"><a href="#">Войти</a></li>
+	</ul>
+	<div class="clear"></div>
+</div>

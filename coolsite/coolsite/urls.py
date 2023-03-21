@@ -20,9 +20,11 @@ from django.urls import path, include
 from coolsite import settings
 from women.views import *
 
+app_name = 'women'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('women.urls')),
+    path('', include(('women.urls', 'women'), namespace='women')),
     path('blog/', include('blog.urls'))
 ]
 

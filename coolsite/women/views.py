@@ -1,34 +1,91 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from time import strftime
-
+from women.forms import *
+from django.views.generic import ListView, DetailView, CreateView
 from .models import *
 
+class WomenHome(ListView):
+    model = Women
+    template_name = 'women/index.html'
+    context_object_name = 'posts'
+    #extra_context = {'title':'Главная страница'}
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title']='Главная страница'
+        context['cat_slug_selected']= 0;
+        return context
+
+    def get_queryset(self):
+        return Women.objects.filter(is_published=True)
 
 
-def index(request, cat_slug=None):
+class WomenCategory(ListView):
+    model = Women
+    template_name = 'women/index.html'
+    context_object_name = 'posts'
+    allow_empty = False
+    #extra_context = {'title':'Главная страница'}
 
-    if(cat_slug==None):
-        posts = Women.objects.all();
-    else:
-        categ = Category.objects.filter(slug=cat_slug)
-        posts = Women.objects.filter(cat= categ[0].pk);
-    print(posts)
-    if len(posts) == 0:
-        raise Http404();
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categ = Category.objects.filter(slug=self.kwargs['cat_slug'])
+        context['title']='Категория:'+categ[0].name
+        context['cat_slug_selected']= self.kwargs['cat_slug'];
+        return context
 
-    params = {'posts': posts, 'title': 'Главная страница', 'cat_slug_selected': cat_slug};
-    return render(request, 'women/index.html', params)
+    def get_queryset(self):
+        return Women.objects.filter(is_published=True, cat__slug=self.kwargs['cat_slug'])
+
+class ShowPost(DetailView):
+    model = Women
+    template_name = 'women/post.html'
+    context_object_name = 'w'
+    allow_empty = False
+    slug_url_kwarg = 'post_slug'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = context['w']
+        context['cat_slug_selected'] = context['w'].cat.slug
+        context['strftime']=strftime
+        #context['cat_selected']= context['w'].cat.slug
+        return context
+
+class AddPage(CreateView):
+    form_class = AddPostForm
+    template_name = 'women/addpage.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+
+        context['title'] = 'Добавление статьи'
+        context['cat_slug_selected'] = 0
+
+        return context
 
 def about(request):
     return render(request, 'women/about.html', { 'title': 'О сайте'})
-
+"""
 def addpage(request):
-    return render(request, 'women/about.html', { 'title': 'Добавить станицу'})
+    if request.method=='POST':
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                Women.objects.create(**form.cleaned_data)
+                return redirect('home')
+            except:
+                form.add_error(None, 'Ошибка добавления поста')
+    else:
+        form = AddPostForm()
+    return render(request, 'women/addpage.html', { 'title': 'Добавить станицу','form':form})
+"""
 
 def contact(request):
     return render(request, 'women/about.html', { 'title': 'Контакты'})
-
+"""
 def show_post(request, post_slug):
 
     women = get_object_or_404(Women, slug=post_slug)
@@ -37,7 +94,7 @@ def show_post(request, post_slug):
 
     # print(women.birthday.time.strftime('%Y:%m:%d'))
 
-    return render(request, 'women/post.html', context=params)
+    return render(request, 'women/post.html', context=params)"""
 
 def login(request):
     return render(request, 'women/about.html', { 'title': 'Войти'})
