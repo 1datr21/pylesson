@@ -66,6 +66,52 @@ ul.list-articles {
 	margin: 0;
 	padding: 0;
 }
+
+
+.list-pages {
+	text-align: center;
+	margin: 0 0 20px 0;
+}
+.list-pages ul {
+	margin: 20px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+.list-pages ul li {
+	display: inline-block;
+	margin: 0 20px 0 0;
+}
+.list-pages a {
+	color: #000;
+	font-size: 24px;
+	text-decoration: none;
+}
+.list-pages .page-num a, .page-num-selected a {
+	display: inline-block;
+	width: 60px;
+	height: 44px;
+	padding: 16px 0 0 0;
+	border: 1px solid #d0d0d0;
+	border-radius: 30px;
+}
+.list-pages .page-num a:hover {
+	box-shadow: 3px 3px 1px #d0d0d0;
+}
+.list-pages .page-num-selected {
+	display: inline-block;
+	width: 60px;
+	height: 44px;
+	padding: 16px 0 0 0;
+	border: 1px solid #d0d0d0;
+	background-color : #d0d0d0;
+	color: white;
+	border-radius: 30px;
+}
+.list-pages .page-num-selected:hover {
+	box-shadow: none;
+}
+
+
 ul.list-articles li {
 	border-bottom: 1px solid #ccc;
 }
@@ -348,6 +394,12 @@ ul.lang-list li a:hover {color: #fdc073;}
 	width: 100%;
 	margin: 0;
 }
+
+span.foreign-agency {
+    color:red;
+    font-size : 16px;
+}
+
 .highlight .block p { margin: 0; }
 
 .quote {

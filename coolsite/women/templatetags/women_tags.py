@@ -18,8 +18,3 @@ def categories_list(sort_params=None, cat_slug_selected=0):
         cats = Category.objects.order_by(sort_params)
     return { 'cats':  cats, 'cat_slug_selected': cat_slug_selected }
 
-@register.inclusion_tag('women/menu.html')
-def header_menu(selected_item=None):
-
-    menu = {"О сайте":'women:home', "Добавить статью":'women:add_page', "Обратная связь":'women:contact'}#, "Войти":'login'}
-    return { 'menu':  menu, 'selected_item':selected_item }

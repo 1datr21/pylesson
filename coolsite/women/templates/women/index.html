@@ -3,13 +3,84 @@
 {% block content %}
 <ul class="list-articles">
 	{% for p in posts %}
-			<li><h2>{{p.title}} {% if p.foreign_agency %}<span class="fa_label">(признана иностранным агентом)</span>{% endif %}</h2>
-	{% autoescape on %}
-	{{p.content|linebreaks|truncatewords:60}}
-	{% endautoescape %}
+		<li>
+			<div class="article-panel">
+				<p class="first">Категория: {{p.cat}}</p>
+				<p class="last">Дата: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
+			</div>
+
+			{% if p.photo %}
+				<p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+			{% endif %}
+
+			<h2>{{p.title}} {% if p.foreign_agency %}<span class="foreign-agency">Признана иностранным агентом</span>{% endif %}</h2>
+			{% autoescape on %}
+			{{p.content|linebreaks|truncatewords:50}}
+			{% endautoescape %}
 			<div class="clear"></div>
 			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
-			</li>
+		</li>
 	{% endfor %}
 </ul>
+{% if page_obj.has_other_pages %}
+<nav class="list-pages">
+	<ul>
+		{% if page_obj.has_previous %}
+			<li>
+				<a href="?page={{ page_obj.previous_page_number }}">&lt;&lt;</a>
+			</li>
+		{% endif %}
+
+		{% if page_obj.number > 3 %}
+			{% if page_obj.number == 1 %}
+					<li class="page-num page-num-selected">1</li>
+			{% else %}
+					<li class="page-num">
+						<a href="?page=1">1</a>
+					</li>
+			{% endif %}
+		{% endif %}
+
+		{% if page_obj.number > 4 %}
+			<li>
+				<span class="dots">...</span>
+			</li>
+		{% endif %}
+
+		{% for p in paginator.page_range %}
+			{% if p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+				{% if page_obj.number == p %}
+					<li class="page-num page-num-selected">{{ p }}</li>
+				{% else %}
+					<li class="page-num">
+						<a href="?page={{ p }}">{{ p }}</a>
+					</li>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+
+		{% if page_obj.number < paginator.num_pages|add:-3 %}
+			<li>
+				<span class="dots">...</span>
+			</li>
+		{% endif %}
+
+		{% if page_obj.number < paginator.num_pages|add:-2 %}
+			{% if page_obj.number == paginator.num_pages %}
+					<li class="page-num page-num-selected">{{ paginator.num_pages }}</li>
+			{% else %}
+					<li class="page-num">
+						<a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a>
+					</li>
+			{% endif %}
+		{% endif %}
+
+		{% if page_obj.has_next %}
+			<li >
+				<a href="?page={{ page_obj.next_page_number }}">&gt;&gt;</a>
+			</li>
+		{% endif %}
+	</ul>
+</nav>
+{% endif %}
 {% endblock %}

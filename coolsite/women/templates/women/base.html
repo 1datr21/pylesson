@@ -1,5 +1,6 @@
 {% load static %}
 {% load women_tags %}
+{% load cache %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,46 +11,75 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<table class="table-page" border=0 cellpadding="0" cellspacing="0">
-<tr><td valign=top>
-{% header_menu %}
+<table class="table-page" width="100%" height="100%" border=0 cellpadding="0" cellspacing="0">
+{% cache 120 header %}
+<tr style="height:60px;">
+	<td valign=top colspan="2">
+		<div class="header">
+		<ul id="mainmenu" class="mainmenu">
+			<li class="logo"><a href="{% url 'home' %}"><div class="logo"><img src="{% static 'women/img/logo.png' %}" /></div></a></li>
+			{% for mi in menu %}
+				<li><a href="{% url mi.url %}">{{ mi.title }}</a></li>
+			{% endfor %}
 
-<table class="table-content" border=0 cellpadding="0" cellspacing="0">
-<tr>
-<!-- Sidebar слева -->
+			{% if request.user.is_authenticated %}
+				<li class="last" >
+					{{ user.username }} |
+					<a href="{% url 'women:logout' %}">Выйти</a>
+				</li>
+			{% else %}
+				<li class="last" >
+					<a href="{% url 'women:register' %}">Регистрация</a>
+				</li>
+				<li class="last" >
+					<a href="{% url 'women:login' %}">Войти</a>
+				</li>
+			{% endif %}
+		</ul>
+		<div class="clear"></div>
+		</div>
+	</td>
+</tr>
+{% endcache %}
+<tr valign="top">
+	<!-- Sidebar слева -->
+
 	<td valign="top" class="left-chapters">
+		<ul id="leftchapters">
 
-	<ul id="leftchapters">
+			{% categories_list 'name' cat_slug_selected=cat_slug_selected %}
 
-		{% categories_list 'name' cat_slug_selected=cat_slug_selected %}
+			<li class="share">
+				<p>Наш канал</p>
+				<a class="share-yt" href="https://www.youtube.com/channel/UClJzWfGWuGJL2t-3dYKcHTA/playlists" target="_blank" rel="nofollow"></a>
+			</li>
+		</ul>
+	</td>
 
-		<li class="share">
-		<p>Наш канал</p>
-		<a class="share-yt" href="https://www.youtube.com/channel/UClJzWfGWuGJL2t-3dYKcHTA/playlists" target="_blank" rel="nofollow"></a>
-		</li>
-	</ul>
-</td>
-<!-- Конец Sidebar'а -->
-<td valign="top" class="content">
-	<!-- Хлебные крошки -->
-	{% block breadcrumbs %}
-	{% endblock %}
+		<!-- Конец Sidebar'а -->
+	<td valign="top" class="content">
+			<!-- Хлебные крошки -->
+			{% block breadcrumbs %}
+			{% endblock %}
 
-<!-- Блок контента -->
-	<div class="content-text">
-{% block content %}
-{% endblock %}
-	</div>
-<!-- Конец блока контента -->
+		<!-- Блок контента -->
+			<div class="content-text">
+		{% block content %}
+		{% endblock %}
+			</div>
+		<!-- Конец блока контента -->
 
-</td></tr></table>
-</td></tr>
+		</td>
+</tr>
 <!-- Footer -->
-<tr><td valign=top>
-	<div id="footer">
-		<p>&copy; 2021 Частичное или полное копирование информации с данного сайта для распространения на других ресурсах, в том числе и бумажных, строго запрещено.</p>
-	</div>
-</td></tr></table>
+<tr>
+	<td valign=top colspan="2">
+		<div id="footer">
+			<p>&copy; 2021 Частичное или полное копирование информации с данного сайта для распространения на других ресурсах, в том числе и бумажных, строго запрещено.</p>
+		</div>
+	</td>
+</tr>
+</table>
 <!-- Конец footer'а и страницы -->
 </body>
 </html>

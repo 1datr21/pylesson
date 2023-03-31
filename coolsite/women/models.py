@@ -16,6 +16,7 @@ class Women(models.Model):
     class Meta:
         verbose_name = 'Известные женщины'
         verbose_name_plural = 'Известные женщины'
+        ordering = ['id']
 
     def __str__(self):
         return self.title;
